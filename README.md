@@ -12,7 +12,7 @@ This repo is intentionally not generic. It is hardcoded for my setup:
 - terminal: `alacritty`
 - launcher/clipboard UI: `fuzzel`
 - notifications: `swaync`
-- bar/tray: `waybar`
+- bars/tray: `waybar` side taskbar + screen-anchored bottom bar
 - clipboard history: `cliphist`
 - Discord/screen sharing portals: `xdg-desktop-portal-wlr`
 - screen recording: `gpu-screen-recorder`
@@ -21,7 +21,7 @@ This repo is intentionally not generic. It is hardcoded for my setup:
 
 ```text
 config/driftwm/     driftwm config, scripts, widgets, wallpapers
-config/waybar/      taskbar and tray configs
+config/waybar/      side taskbar, bottom bar, and legacy tray configs
 config/fuzzel/      default fuzzel config for niri/other sessions
 config/driftwm/fuzzel/ driftwm-specific fuzzel config
 config/swaync/      notification daemon config

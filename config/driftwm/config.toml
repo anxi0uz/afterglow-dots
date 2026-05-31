@@ -12,7 +12,7 @@ autostart = [
     "command -v wl-paste >/dev/null && command -v cliphist >/dev/null && wl-paste --type text --watch cliphist store",
     "command -v wl-paste >/dev/null && command -v cliphist >/dev/null && wl-paste --type image --watch cliphist store",
     "command -v waybar >/dev/null && waybar -c ~/.config/waybar/taskbar.jsonc -s ~/.config/waybar/taskbar.css",
-    "command -v waybar >/dev/null && sleep 1 && waybar -c ~/.config/waybar/tray.jsonc -s ~/.config/waybar/tray.css",
+    "command -v waybar >/dev/null && sleep 1 && waybar -c ~/.config/waybar/bottom.jsonc -s ~/.config/waybar/bottom.css",
     "python -c 'import rich' >/dev/null 2>&1 && ~/.config/driftwm/widgets/launch.sh",
     "~/.config/driftwm/scripts/battery_notify.sh",
     "~/.config/driftwm/scripts/theme-watch.sh",
@@ -42,10 +42,11 @@ theme = "capitaine-cursors"
 [decorations]
 bg_color = "#272E33"
 fg_color = "#D3C6AA"
+default_mode = "minimal"
 
 [background]
-type = "shader"
-path = "/home/anxi0uz/.config/driftwm/wallpapers/static/dark_sea.glsl"
+type = "wallpaper"
+path = "/home/anxi0uz/.config/driftwm/wallpapers/generated/photo-fill-c6edc0dee3de2652.png"
 
 [output.outline]
 color="#FDF6E3"
@@ -68,6 +69,7 @@ decoration_fit_snapped = true
 "mod+a" = "home-toggle"
 "mod+w" = "zoom-to-fit"
 "mod+shift+w" = "spawn ~/.config/driftwm/scripts/wallpaper-cycle.sh"
+"mod+ctrl+w" = "spawn ~/.config/driftwm/scripts/photo-wallpaper.sh select fill"
 "mod+c" = "center-window"
 "mod+shift+d" = "spawn ~/.config/driftwm/scripts/theme-toggle.sh"
 "mod+shift+i" = "spawn ~/.config/driftwm/scripts/idle-toggle.sh"
@@ -103,7 +105,8 @@ mode = "1920x1080@180"
 scale = 1.0
 
 [effects]
-blur_radius = 3
+blur_radius = 7
+blur_strength = 1.45
 
 # Dashboard widgets — positioned around origin for home view (1920x1080)
 
@@ -148,19 +151,13 @@ position = [274, -259]
 [[window_rules]]
 app_id = "drift-power-menu"
 position = [274, -370]
-decoration = "server"
+decoration = "none"
 
-# Waybar: layer-shell uses match_window_rule_nth (Nth instance → Nth rule
-# with `position`), so these must stay as separate fully-specified rules.
+# Waybar side taskbar stays on the canvas. The bottom bar intentionally has no
+# positioned rule, so driftwm maps it as a normal screen-anchored layer-shell.
 [[window_rules]]
 app_id = "waybar"
 position = [-289, 21]
-widget = true
-decoration = "none"
-
-[[window_rules]]
-app_id = "waybar"
-position = [126, -259]
 widget = true
 decoration = "none"
 
@@ -173,24 +170,10 @@ widget = true
 app_id = "com.system76.CosmicSettings"
 size=[500, 725]
 
-# Server side decoration
+# Telegram: no compositor titlebar.
 [[window_rules]]
 app_id = "org.telegram.desktop"
-decoration = "server"
-blur = true
-
-# Blur shell-overlay popups (notifications + launcher)
-[[window_rules]]
-app_id = "swaync-control-center"
-blur = true
-
-[[window_rules]]
-app_id = "swaync-notification-window"
-blur = true
-
-[[window_rules]]
-app_id = "launcher"
-blur = true
+decoration = "minimal"
 
 [[window_rules]]
 app_id = "Alacritty"

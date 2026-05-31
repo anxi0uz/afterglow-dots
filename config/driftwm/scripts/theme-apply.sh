@@ -55,12 +55,12 @@ if [ "$no_restart" = "--no-restart" ]; then
     exit 0
 fi
 
-# Restart waybar in autostart order (taskbar first, then tray after 1s).
+# Restart waybar in autostart order (side taskbar first, then bottom bar after 1s).
 pkill -x waybar 2>/dev/null || true
 sleep 0.3
 waybar -c "$HOME/.config/waybar/taskbar.jsonc" -s "$HOME/.config/waybar/taskbar.css" &
 sleep 1
-waybar -c "$HOME/.config/waybar/tray.jsonc" -s "$HOME/.config/waybar/tray.css" &
+waybar -c "$HOME/.config/waybar/bottom.jsonc" -s "$HOME/.config/waybar/bottom.css" &
 
 # swayosd-server snapshots the GTK theme at startup; restart for OSD popups
 # (volume, brightness) to render in the new palette.

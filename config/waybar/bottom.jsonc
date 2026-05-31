@@ -1,0 +1,114 @@
+{
+  "output": "DP-1",
+  "layer": "top",
+  "position": "bottom",
+  "height": 28,
+  "exclusive": true,
+  "passthrough": false,
+  "spacing": 0,
+
+  "modules-left": [
+    "wlr/taskbar",
+    "custom/coords"
+  ],
+  "modules-center": [
+    "clock"
+  ],
+  "modules-right": [
+    "cpu",
+    "memory",
+    "custom/idle",
+    "pulseaudio",
+    "network",
+    "battery",
+    "tray"
+  ],
+
+  "wlr/taskbar": {
+    "format": " {name} ",
+    "icon-size": 1,
+    "active-first": true,
+    "tooltip-format": "{title}",
+    "on-click": "activate",
+    "on-click-middle": "close",
+    "on-click-right": "close",
+    "rewrite": {
+      "Google Chrome": "chrome",
+      "Alacritty": "term",
+      "org.telegram.desktop": "telegram",
+      "discord": "discord"
+    }
+  },
+
+  "custom/coords": {
+    "exec": "~/.config/waybar/drift-coords.py",
+    "return-type": "json",
+    "restart-interval": 1,
+    "format": " {text} ",
+    "tooltip": true
+  },
+
+  "clock": {
+    "format": " {:%a %d %b %H:%M:%S} ",
+    "interval": 1,
+    "tooltip-format": "{:%Y-%m-%d}"
+  },
+
+  "cpu": {
+    "format": " cpu:{usage}% ",
+    "interval": 2,
+    "tooltip": false
+  },
+
+  "memory": {
+    "format": " mem:{percentage}% ",
+    "interval": 5,
+    "tooltip": false
+  },
+
+  "custom/idle": {
+    "exec": "~/.config/driftwm/scripts/idle-toggle.sh status",
+    "interval": 5,
+    "format": " idle:{} ",
+    "on-click": "~/.config/driftwm/scripts/idle-toggle.sh",
+    "tooltip": false
+  },
+
+  "pulseaudio": {
+    "format": " vol:{volume}% {format_source}",
+    "format-muted": " vol:mut {format_source}",
+    "format-source": "mic:{volume}% ",
+    "format-source-muted": "mic:mut ",
+    "on-click": "pavucontrol",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+    "scroll-step": 5,
+    "tooltip": false
+  },
+
+  "network": {
+    "format-wifi": " net:{essid}:{signalStrength}% ",
+    "format-ethernet": " net:{ifname} ",
+    "format-linked": " net:link ",
+    "format-disconnected": " net:down ",
+    "on-click": "nm-connection-editor",
+    "tooltip": false
+  },
+
+  "battery": {
+    "format": " bat:{capacity}% ",
+    "format-charging": " bat:{capacity}%+ ",
+    "format-plugged": " bat:ac ",
+    "format-full": " bat:full ",
+    "format-alt": " bat:{time} ",
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "tooltip": false
+  },
+
+  "tray": {
+    "icon-size": 15,
+    "spacing": 4
+  }
+}

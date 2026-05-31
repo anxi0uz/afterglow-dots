@@ -1,0 +1,91 @@
+* {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    font-family: "FantasqueSansM Nerd Font Mono", "Noto Sans Mono", monospace;
+    font-size: 10px;
+    font-weight: 500;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(4, 5, 4, 0.90);
+    border-top: 1px solid rgba(220, 220, 210, 0.16);
+    color: #b8b8ae;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+    background: transparent;
+}
+
+#clock,
+#cpu,
+#memory,
+#custom-coords,
+#custom-idle,
+#pulseaudio,
+#network,
+#battery,
+#tray {
+    background: transparent;
+    border-left: 1px solid #252520;
+    color: #b8b8ae;
+    margin: 0;
+    padding: 0 9px;
+}
+
+#taskbar {
+    background: transparent;
+    border-left: 1px solid #050505;
+    border-right: 1px solid #252520;
+    margin: 0;
+    padding: 0 2px;
+}
+
+#taskbar button {
+    background: transparent;
+    border-left: 1px solid #20201c;
+    color: #a4a49a;
+    margin: 0;
+    padding: 0 6px;
+}
+
+#taskbar button:hover {
+    background: #181814;
+    color: #d8d2c3;
+}
+
+#taskbar button.active {
+    background: #d8d2c3;
+    border-left: 1px solid #d8d2c3;
+    color: #050605;
+}
+
+#pulseaudio.muted,
+#network.disconnected,
+#battery.warning {
+    background: #17130e;
+    color: #d2a24c;
+}
+
+#battery.critical {
+    background: #4a1717;
+    color: #ffd0d0;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
+
+tooltip {
+    background: #050605;
+    border: 1px solid #44443c;
+    border-radius: 0;
+    color: #d8d2c3;
+}

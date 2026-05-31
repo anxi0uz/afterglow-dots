@@ -3,6 +3,7 @@ set -eu
 
 RICE="${XDG_CONFIG_HOME:-$HOME/.config}/driftwm"
 CONFIG="$RICE/config.toml"
+DOTFILES_CONFIG="$HOME/dotfiles-2/config/driftwm/config.toml"
 WALLPAPER_DIR="$RICE/wallpapers"
 
 notify() {
@@ -75,25 +76,39 @@ EOF
         ;;
 esac
 
-tmp="$(mktemp "$CONFIG.XXXXXX")"
-if awk -v target="$next" '
-    /^\[background\]/ { in_background = 1; print; next }
-    in_background && /^\[/ { in_background = 0 }
-    in_background && /^[[:space:]]*path[[:space:]]*=/ {
-        print "path = \"" target "\""
-        replaced = 1
-        next
-    }
-    { print }
-    END { if (!replaced) exit 3 }
-' "$CONFIG" > "$tmp"; then
-    chmod --reference="$CONFIG" "$tmp" 2>/dev/null || chmod 0644 "$tmp"
-    mv "$tmp" "$CONFIG"
-else
-    rm -f "$tmp"
-    notify "failed to update config.toml"
-    exit 1
-fi
+update_config() {
+    config="$1"
+    target="$2"
+    [ -f "$config" ] || return 0
+
+    tmp="$(mktemp "$config.XXXXXX")"
+    if awk -v target="$target" '
+        /^\[background\]/ { in_background = 1; print; next }
+        in_background && /^\[/ { in_background = 0 }
+        in_background && /^[[:space:]]*type[[:space:]]*=/ {
+            print "type = \"shader\""
+            type_replaced = 1
+            next
+        }
+        in_background && /^[[:space:]]*path[[:space:]]*=/ {
+            print "path = \"" target "\""
+            path_replaced = 1
+            next
+        }
+        { print }
+        END { if (!type_replaced || !path_replaced) exit 3 }
+    ' "$config" > "$tmp"; then
+        chmod --reference="$config" "$tmp" 2>/dev/null || chmod 0644 "$tmp"
+        mv "$tmp" "$config"
+    else
+        rm -f "$tmp"
+        notify "failed to update $(basename "$config")"
+        exit 1
+    fi
+}
+
+update_config "$CONFIG" "$next"
+update_config "$DOTFILES_CONFIG" "$next"
 
 label="${next#$WALLPAPER_DIR/}"
 notify "$label"
