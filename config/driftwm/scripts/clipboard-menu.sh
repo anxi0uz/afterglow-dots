@@ -8,7 +8,7 @@ fi
 
 selection="$(
     cliphist list |
-        fuzzel --dmenu \
+        fuzzel --config "$HOME/.config/driftwm/fuzzel/fuzzel.ini" --dmenu \
             --prompt="Clipboard: " \
             --width=90 \
             --no-run-if-empty

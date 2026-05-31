@@ -21,16 +21,10 @@ if [ "$mode" = "light" ]; then
     BG="#FDF6E3"
     FG="#5C6A72"
     SHADER="pink_cloud.glsl"
-    GTK_THEME="adw-gtk3"
-    GTK_PREFER_DARK=0
-    COSMIC_DARK=false
 else
     BG="#272E33"
     FG="#D3C6AA"
     SHADER="dark_sea.glsl"
-    GTK_THEME="adw-gtk3-dark"
-    GTK_PREFER_DARK=1
-    COSMIC_DARK=true
 fi
 
 # driftwm: decorations.bg_color, decorations.fg_color, background.path
@@ -41,24 +35,8 @@ sed -i \
     -e "s|^path = \".*static/[^\"]*\\.glsl\"|path = \"$RICE/wallpapers/static/$SHADER\"|" \
     "$RICE/config.toml"
 
-# alacritty: swap import to colors-{light,dark}.toml. Live-reload picks it up.
-sed -i "s|colors-[a-z]*\\.toml|colors-${mode}.toml|" "$HOME/.config/alacritty/alacritty.toml"
-
-# GTK 3 + GTK 4: settings.ini is the file-based fallback for apps that don't
-# subscribe to gsettings. gsettings broadcast below covers the rest.
-for f in "$HOME/.config/gtk-3.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"; do
-    [ -f "$f" ] || continue
-    sed -i \
-        -e "s|^gtk-theme-name=.*|gtk-theme-name=$GTK_THEME|" \
-        -e "s|^gtk-application-prefer-dark-theme=.*|gtk-application-prefer-dark-theme=$GTK_PREFER_DARK|" \
-        "$f"
-done
-# Live broadcast for running GTK apps subscribed via dconf.
-gsettings set org.gnome.desktop.interface gtk-theme "$GTK_THEME"
-
-# COSMIC apps: cosmic-config inotify-watches Mode/v1/is_dark and propagates live.
-COSMIC_MODE_FILE="$HOME/.config/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark"
-[ -f "$COSMIC_MODE_FILE" ] && printf '%s' "$COSMIC_DARK" > "$COSMIC_MODE_FILE"
+# driftwm alacritty: swap import to colors-{light,dark}.toml.
+sed -i "s|colors-[a-z]*\\.toml|colors-${mode}.toml|" "$RICE/alacritty/alacritty.toml"
 
 # waybar CSS: only `background:` inside window#waybar and tooltip blocks.
 # Leaves button.active background (accent) and tooltip color (fg, mode-constant

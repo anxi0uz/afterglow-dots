@@ -27,6 +27,8 @@ def open_menu() -> None:
     subprocess.Popen(
         [
             "alacritty",
+            "--config-file",
+            str(Path.home() / ".config/driftwm/alacritty/alacritty.toml"),
             "--class",
             "drift-power-menu",
             "-o",

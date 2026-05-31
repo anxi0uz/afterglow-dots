@@ -49,7 +49,7 @@ done
 
 [ -s "$display" ] || exit 0
 
-selected=$(fuzzel --dmenu \
+selected=$(fuzzel --config "$HOME/.config/driftwm/fuzzel/fuzzel.ini" --dmenu \
     --prompt="Window: " \
     --no-run-if-empty \
     --index \

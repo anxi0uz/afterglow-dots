@@ -21,9 +21,12 @@ This repo is intentionally not generic. It is hardcoded for my setup:
 ```text
 config/driftwm/     driftwm config, scripts, widgets, wallpapers
 config/waybar/      taskbar and tray configs
-config/fuzzel/      launcher and clipboard menu config
+config/fuzzel/      default fuzzel config for niri/other sessions
+config/driftwm/fuzzel/ driftwm-specific fuzzel config
 config/swaync/      notification daemon config
-config/alacritty/   terminal config and rice colors
+config/alacritty/   default alacritty config for niri/other sessions
+config/driftwm/alacritty/ driftwm-specific alacritty config
+config/gtk-3.0/     GTK settings restored for the normal desktop look
 packages/           dependency package lists
 install.sh          copies configs into ~/.config with backup
 ```
@@ -193,6 +196,9 @@ Log:
 
 If `gsettings` says `prefer-dark`, it applies dark colors and `dark_sea.glsl`.
 Otherwise it applies light colors and `pink_cloud.glsl`.
+
+It only changes driftwm, waybar, and driftwm's private alacritty config. The default
+`~/.config/alacritty` and `~/.config/fuzzel` are kept for niri/other sessions.
 
 To stop automatic theme switching, remove this autostart line from `config/driftwm/config.toml`:
 

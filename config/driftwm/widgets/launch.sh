@@ -8,6 +8,7 @@ export PATH="$HOME/.local/bin:$PATH"
 launch() {
     local name="$1" cols="$2" lines="$3" script="$4"
     alacritty --class "drift-${name}" \
+        --config-file "$HOME/.config/driftwm/alacritty/alacritty.toml" \
         -o "window.dimensions.columns=${cols}" \
         -o "window.dimensions.lines=${lines}" \
         -o "window.padding.x=8" \
@@ -26,6 +27,7 @@ launch notif       21 4  notif_widget.py
 
 # Power button — custom padding to match tray waybar height (28px)
 alacritty --class "drift-power" \
+    --config-file "$HOME/.config/driftwm/alacritty/alacritty.toml" \
     -o "window.dimensions.columns=3" \
     -o "window.dimensions.lines=1" \
     -o "window.padding.x=5" \

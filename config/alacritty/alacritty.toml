@@ -1,76 +1,81 @@
 [general]
-import = ["~/.config/alacritty/colors-dark.toml"]
+import = ["~/.config/alacritty/themes/noctalia.toml"]
 
-[keyboard]
-bindings = [
-    { action = "SpawnNewInstance", key = "Return", mods = "Super|Alt" },
-]
+[window]
+opacity = 0.85
+blur = true
+dynamic_padding = true
+decorations = "full"
+title = "Alacritty"
+
+[window.dimensions]
+columns = 100
+lines = 30
+
+[window.padding]
+x = 8
+y = 8
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[font]
+size = 10.0
+
+[font.normal]
+family = "monospace"
+style = "Regular"
+
+[font.bold]
+family = "monospace"
+style = "Bold"
+
+[colors.primary]
+background = "#0a0a0a"
+foreground = "#cdd6f4"
+
+[colors.normal]
+black = "#1e1e2e"
+red = "#f38ba8"
+green = "#a6e3a1"
+yellow = "#f9e2af"
+blue = "#89b4fa"
+magenta = "#f5c2e7"
+cyan = "#94e2d5"
+white = "#bac2de"
+
+[colors.bright]
+black = "#313244"
+red = "#f38ba8"
+green = "#a6e3a1"
+yellow = "#f9e2af"
+blue = "#89b4fa"
+magenta = "#f5c2e7"
+cyan = "#94e2d5"
+white = "#cdd6f4"
+
+[cursor]
+style = "Underline"
+thickness = 0.15
 
 [selection]
 save_to_clipboard = true
 
-[scrolling]
-history = 65535
+[mouse]
+hide_when_typing = true
 
-[font]
-size = 11
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Shift"
+action = "Paste"
 
-[font.normal]
-family = "FantasqueSansM Nerd Font"
-style = "Regular"
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+action = "Copy"
 
-[font.bold]
-family = "FantasqueSansM Nerd Font"
-style = "Bold"
-
-[font.italic]
-family = "FantasqueSansM Nerd Font"
-style = "Italic"
-
-[font.bold_italic]
-family = "FantasqueSansM Nerd Font"
-style = "Bold Italic"
-
-[font.offset]
-x = 0
-y = 0
-
-[font.glyph_offset]
-x = 0
-y = 0
-
-[colors.cursor]
-text = "#112a2a"
-cursor = "#DCDFE4"
-
-[colors.vi_mode_cursor]
-text = "#112a2a"
-cursor = "#DCDFE4"
-
-[colors.search.matches]
-foreground = "#000000"
-background = "#1AE642"
-
-[colors.search.focused_match]
-foreground = "#000000"
-background = "#ff00ff"
-
-[colors.hints.start]
-foreground = "#1d1f21"
-background = "#1AE642"
-
-[colors.hints.end]
-foreground = "#1AE642"
-background = "#1d1f21"
-
-[colors.line_indicator]
-foreground = "#fa5b1c"
-background = "#1d1f21"
-
-[colors.footer_bar]
-background = "#731d8b"
-foreground = "#ffffff"
-
-[colors.selection]
-text = "#112a2a"
-background = "#1AE642"
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"

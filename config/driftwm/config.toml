@@ -55,8 +55,8 @@ decoration_resize_snapped = true
 decoration_fit_snapped = true
 
 [keybindings]
-"mod+return" = "exec alacritty"
-"mod+d" = "exec fuzzel"
+"mod+return" = "exec alacritty --config-file ~/.config/driftwm/alacritty/alacritty.toml"
+"mod+d" = "exec fuzzel --config ~/.config/driftwm/fuzzel/fuzzel.ini"
 "mod+b" = "exec google-chrome-stable"
 "mod+e" = "exec nautilus"
 "mod+z" = "exec zeditor"
