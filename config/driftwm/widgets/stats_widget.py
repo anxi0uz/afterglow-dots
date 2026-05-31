@@ -96,27 +96,6 @@ def _set_volume(pct: int) -> None:
 
 # ── Caffeine (swayidle toggle) ─────────────────────────────
 
-_LOCK_SH = str(
-    Path("~/.config/driftwm/scripts/lock.sh").expanduser(),
-)
-SWAYIDLE_CMD = [
-    "swayidle",
-    "-w",
-    "timeout",
-    "300",
-    "brightnessctl -s set 10%",
-    "resume",
-    "brightnessctl -r",
-    "timeout",
-    "330",
-    _LOCK_SH,
-    "timeout",
-    "600",
-    "systemctl suspend",
-    "before-sleep",
-    _LOCK_SH,
-]
-
 
 def _is_swayidle_running() -> bool:
     return (
@@ -135,23 +114,13 @@ _caffeine_on = not _is_swayidle_running()
 
 def _toggle_caffeine() -> None:
     global _caffeine_on  # noqa: PLW0603
-    if _caffeine_on:
-        # Turn off caffeine → restart swayidle
-        subprocess.Popen(
-            SWAYIDLE_CMD,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-        _caffeine_on = False
-    else:
-        # Turn on caffeine → kill swayidle
-        subprocess.run(
-            ["killall", "swayidle"],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            check=False,
-        )
-        _caffeine_on = True
+    subprocess.run(
+        [str(Path("~/.config/driftwm/scripts/idle-toggle.sh").expanduser())],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    _caffeine_on = not _is_swayidle_running()
 
 
 def _set_brightness(pct: int) -> None:
@@ -256,6 +225,8 @@ def _render_volume(text: Text, line: int, slow: dict) -> int:
 
 
 def _render_brightness(text: Text, line: int) -> int:
+    global _caffeine_on  # noqa: PLW0603
+    _caffeine_on = not _is_swayidle_running()
     bri = get_brightness()
     if bri is None:
         return line

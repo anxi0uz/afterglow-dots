@@ -104,6 +104,7 @@ Super+C            center window
 Super+S            search open windows
 Super+L            lock
 Super+Shift+D      toggle theme
+Super+Shift+I      toggle caffeine / auto-lock
 Super+Shift+W      cycle wallpaper
 Super+N            swaync notification center
 Super+Shift+R      start screen recording
