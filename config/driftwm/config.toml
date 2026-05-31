@@ -1,0 +1,196 @@
+# driftwm — personal config (symlink to ~/.config/driftwm/config.toml)
+
+autostart = [
+    # gnome-keyring is started+unlocked by PAM (pam_gnome_keyring auto_start in
+    # /etc/pam.d/gdm-password and gdm-autologin) with the secrets component only;
+    # driftwm-session imports the PAM env into systemd/D-Bus before driftwm
+    # launches. This line attaches the ssh component to the already-unlocked
+    # daemon and propagates SSH_AUTH_SOCK (PAM doesn't set it for ssh-only).
+    "eval $(gnome-keyring-daemon --start --components=ssh) && systemctl --user import-environment SSH_AUTH_SOCK && dbus-update-activation-environment SSH_AUTH_SOCK",
+    "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1",
+    "command -v swaync >/dev/null && swaync",
+    "command -v wl-paste >/dev/null && command -v cliphist >/dev/null && wl-paste --type text --watch cliphist store",
+    "command -v wl-paste >/dev/null && command -v cliphist >/dev/null && wl-paste --type image --watch cliphist store",
+    "command -v waybar >/dev/null && waybar -c ~/.config/waybar/taskbar.jsonc -s ~/.config/waybar/taskbar.css",
+    "command -v waybar >/dev/null && sleep 1 && waybar -c ~/.config/waybar/tray.jsonc -s ~/.config/waybar/tray.css",
+    "python -c 'import rich' >/dev/null 2>&1 && ~/.config/driftwm/widgets/launch.sh",
+    "~/.config/driftwm/scripts/battery_notify.sh",
+    "~/.config/driftwm/scripts/theme-watch.sh",
+    "command -v swayidle >/dev/null && swayidle -w timeout 300 'brightnessctl -s set 10%' resume 'brightnessctl -r' timeout 330 '~/.config/driftwm/scripts/lock.sh' timeout 600 'systemctl suspend' before-sleep '~/.config/driftwm/scripts/lock.sh'",
+]
+
+focus_follows_mouse = true
+window_placement = "auto"
+
+[env]
+QT_QPA_PLATFORMTHEME = "qt6ct"
+
+[snap]
+same_edge = true
+edge_center = true
+
+[input.keyboard]
+layout = "us,ru"
+options = "grp:alt_shift_toggle"
+
+[zoom]
+reset_on_new_window = false
+
+[cursor]
+theme = "capitaine-cursors"
+
+[decorations]
+bg_color = "#272E33"
+fg_color = "#D3C6AA"
+
+[background]
+type = "shader"
+path = "/home/anxi0uz/.config/driftwm/wallpapers/static/dark_sea.glsl"
+
+[output.outline]
+color="#FDF6E3"
+
+[mouse]
+decoration_resize_snapped = true
+decoration_fit_snapped = true
+
+[keybindings]
+"mod+return" = "exec alacritty"
+"mod+d" = "exec fuzzel"
+"mod+b" = "exec google-chrome-stable"
+"mod+e" = "exec nautilus"
+"mod+z" = "exec zeditor"
+"mod+v" = "spawn ~/.config/driftwm/scripts/clipboard-menu.sh"
+"mod+shift+t" = "exec Telegram"
+"mod+shift+g" = "exec discord"
+"mod+q" = "close-window"
+"mod+f" = "toggle-fullscreen"
+"mod+a" = "home-toggle"
+"mod+w" = "zoom-to-fit"
+"mod+c" = "center-window"
+"mod+shift+d" = "spawn ~/.config/driftwm/scripts/theme-toggle.sh"
+"mod+l" = "spawn ~/.config/driftwm/scripts/lock.sh"
+"mod+alt+l" = "spawn ~/.config/driftwm/scripts/lock.sh"
+"mod+n" = "spawn swaync-client -t"
+"XF86AudioRaiseVolume" = "spawn wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+"XF86AudioLowerVolume" = "spawn wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+"XF86AudioMute" = "spawn wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+"XF86AudioMicMute" = "spawn wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+"XF86AudioNext" = "spawn playerctl next"
+"XF86AudioPrev" = "spawn playerctl previous"
+"XF86AudioPlay" = "spawn playerctl play-pause"
+"XF86AudioPause" = "spawn playerctl play-pause"
+"XF86AudioStop" = "spawn playerctl stop"
+"XF86MonBrightnessUp" = "spawn brightnessctl set +5%"
+"XF86MonBrightnessDown" = "spawn brightnessctl set 5%-"
+"mod+s" = "exec ~/.config/driftwm/scripts/window-search.sh"
+"mod+shift+r" = "spawn ~/.config/driftwm/scripts/record-start.sh"
+"mod+shift+s" = "spawn ~/.config/driftwm/scripts/record-stop.sh"
+"mod+m" = "fit-window-snapped"
+"mod+shift+m" = "fit-window"
+"mod+ctrl+shift+q" = "quit"
+"Print" = "spawn grim - | wl-copy"
+
+[gestures.on-window]
+"alt+3-finger-swipe" = "resize-window-snapped"
+"alt+shift+3-finger-swipe" = "resize-window"
+
+[[outputs]]
+name = "DP-1"
+mode = "1920x1080@180"
+scale = 1.0
+
+[effects]
+blur_radius = 3
+
+# Dashboard widgets — positioned around origin for home view (1920x1080)
+
+# Shared defaults for all drift-* widgets (sticky-on flags, last-wins scalars)
+[[window_rules]]
+app_id = "drift-*"
+widget = true
+decoration = "none"
+
+[[window_rules]]
+app_id = "drift-clock"
+position = [-93, 205]
+
+[[window_rules]]
+app_id = "drift-stats"
+position = [-93, 0]
+
+[[window_rules]]
+app_id = "drift-canvas"
+position = [-129, -185]
+
+[[window_rules]]
+app_id = "drift-layout"
+position = [42, -185]
+
+[[window_rules]]
+app_id = "drift-calendar"
+position = [186, 0]
+
+[[window_rules]]
+app_id = "drift-weather"
+position = [186, 205]
+
+[[window_rules]]
+app_id = "drift-notif"
+position = [190, -185]
+
+[[window_rules]]
+app_id = "drift-power"
+position = [274, -259]
+
+[[window_rules]]
+app_id = "drift-power-menu"
+position = [274, -370]
+decoration = "server"
+
+# Waybar: layer-shell uses match_window_rule_nth (Nth instance → Nth rule
+# with `position`), so these must stay as separate fully-specified rules.
+[[window_rules]]
+app_id = "waybar"
+position = [-289, 21]
+widget = true
+decoration = "none"
+
+[[window_rules]]
+app_id = "waybar"
+position = [126, -259]
+widget = true
+decoration = "none"
+
+# Cosmic settings: hide winit window helper and apply fixed window size
+[[window_rules]]
+title = "winit window"
+widget = true
+
+[[window_rules]]
+app_id = "com.system76.CosmicSettings"
+size=[500, 725]
+
+# Server side decoration
+[[window_rules]]
+app_id = "org.telegram.desktop"
+decoration = "server"
+blur = true
+
+# Blur shell-overlay popups (notifications + launcher)
+[[window_rules]]
+app_id = "swaync-control-center"
+blur = true
+
+[[window_rules]]
+app_id = "swaync-notification-window"
+blur = true
+
+[[window_rules]]
+app_id = "launcher"
+blur = true
+
+[[window_rules]]
+app_id = "Alacritty"
+opacity = 0.8
+blur = true
