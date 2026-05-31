@@ -9,6 +9,9 @@ swaync
 swayidle
 swaylock
 grim
+slurp
+xdg-desktop-portal
+xdg-desktop-portal-wlr
 wl-clipboard
 cliphist
 gpu-screen-recorder

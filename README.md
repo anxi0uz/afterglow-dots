@@ -14,6 +14,7 @@ This repo is intentionally not generic. It is hardcoded for my setup:
 - notifications: `swaync`
 - bar/tray: `waybar`
 - clipboard history: `cliphist`
+- Discord/screen sharing portals: `xdg-desktop-portal-wlr`
 - screen recording: `gpu-screen-recorder`
 
 ## Contents
@@ -103,6 +104,7 @@ Super+C            center window
 Super+S            search open windows
 Super+L            lock
 Super+Shift+D      toggle theme
+Super+Shift+W      cycle wallpaper
 Super+N            swaync notification center
 Super+Shift+R      start screen recording
 Super+Shift+S      stop screen recording
@@ -156,6 +158,30 @@ Open clipboard history:
 
 ```text
 Super+V
+```
+
+## Discord Screen Sharing
+
+`Super+Shift+G` launches Discord through:
+
+```text
+~/.config/driftwm/scripts/discord-x11.sh
+```
+
+That wrapper forces X11/Ozone X11 so Discord hotkeys keep working while the
+Discord window is focused.
+
+The `driftwm` portal config uses the wlroots screencast backend:
+
+```text
+xdg-desktop-portal-wlr
+```
+
+Install `slurp` too; portal/screenshot tools use it for interactive region
+selection. After installing portal packages, restart the session or run:
+
+```sh
+systemctl --user restart xdg-desktop-portal xdg-desktop-portal-wlr
 ```
 
 ## Screen Recording

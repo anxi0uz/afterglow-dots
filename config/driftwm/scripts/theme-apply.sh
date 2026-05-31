@@ -32,7 +32,7 @@ fi
 sed -i \
     -e "s|^bg_color = \".*\"|bg_color = \"$BG\"|" \
     -e "s|^fg_color = \".*\"|fg_color = \"$FG\"|" \
-    -e "s|^path = \".*static/[^\"]*\\.glsl\"|path = \"$RICE/wallpapers/static/$SHADER\"|" \
+    -e "s|^path = \".*/wallpapers/[^\"]*\\.glsl\"|path = \"$RICE/wallpapers/static/$SHADER\"|" \
     "$RICE/config.toml"
 
 # driftwm alacritty: swap import to colors-{light,dark}.toml.
