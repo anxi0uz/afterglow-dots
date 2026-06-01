@@ -1,8 +1,9 @@
-# dotfiles-2
+# afterglow
 
-Personal CachyOS/driftwm rice for user `anxi0uz`.
+Personal CachyOS/driftwm rice. The repository can be named `afterglow-dots`;
+inside the docs and installer it is called `afterglow`.
 
-This repo is intentionally not generic. It is hardcoded for my setup:
+This repo is opinionated and still defaults to my setup:
 
 - compositor: `driftwm`
 - monitor: `DP-1`
@@ -12,16 +13,30 @@ This repo is intentionally not generic. It is hardcoded for my setup:
 - terminal: `alacritty`
 - launcher/clipboard UI: `fuzzel`
 - notifications: `swaync`
-- bars/tray: `waybar` side taskbar + screen-anchored bottom bar
+- bars/tray: `waybar` screen-anchored bottom bar
 - clipboard history: `cliphist`
 - Discord/screen sharing portals: `xdg-desktop-portal-wlr`
 - screen recording: `gpu-screen-recorder`
+
+## Screenshots
+
+| Desktop | Notifications |
+| --- | --- |
+| ![Empty desktop](screens/empty%20desktop.jpg) | ![Desktop with notifications](screens/desktop%2Bnotifs.jpg) |
+
+| Launcher | Window Search |
+| --- | --- |
+| ![App launcher](screens/app%20launcher.jpg) | ![Windows search](screens/windows%20search%20script.jpg) |
+
+| Wallpaper Picker | Power Menu |
+| --- | --- |
+| ![Wallpaper picker](screens/wallpapers%20pick%20menu.jpg) | ![Power menu](screens/power%20menu.jpg) |
 
 ## Contents
 
 ```text
 config/driftwm/     driftwm config, scripts, widgets, wallpapers
-config/waybar/      side taskbar, bottom bar, and legacy tray configs
+config/waybar/      bottom bar config and styles
 config/fuzzel/      default fuzzel config for niri/other sessions
 config/driftwm/fuzzel/ driftwm-specific fuzzel config
 config/swaync/      notification daemon config
@@ -34,7 +49,7 @@ install.sh          copies configs into ~/.config with backup
 
 ## Install Dependencies
 
-On CachyOS/Arch:
+On CachyOS/Arch-based:
 
 ```sh
 xargs -a packages/pacman.txt sudo pacman -S --needed
@@ -48,18 +63,51 @@ xargs -a packages/aur.txt yay -S --needed
 
 If `google-chrome` exists in your CachyOS repos, installing it through `pacman` is fine too.
 
+The installer can also run both package lists:
+
+```sh
+./install.sh --packages-only
+```
+
 ## Apply Configs
 
 From the repo root:
+
+Check before installing:
+
+```sh
+./install.sh --check
+```
+
+Preview file changes without writing anything:
+
+```sh
+./install.sh --dry-run
+```
+
+Install configs:
 
 ```sh
 ./install.sh
 ```
 
+For a VM, laptop, or a monitor that is not `DP-1`, either pass the output
+explicitly:
+
+```sh
+./install.sh --output Virtual-1 --mode 1920x1080@60
+```
+
+Or try automatic detection from `wlr-randr`:
+
+```sh
+./install.sh --detect-output
+```
+
 The installer backs up existing configs to:
 
 ```text
-~/.config-backups/dotfiles-2-YYYYMMDD-HHMMSS
+~/.config-backups/afterglow-YYYYMMDD-HHMMSS
 ```
 
 Then it copies:
@@ -84,55 +132,84 @@ After that, log out and choose the `driftwm` session in the login manager.
 
 ## Keybinds
 
+`mod` means `Super`.
+
 ```text
-Alt+Shift          switch keyboard layout
-Super+Enter        terminal
-Super+D            launcher
-Super+V            clipboard history
-Super+B            Chrome
-Super+E            Nautilus
-Super+Z            Zed
-Super+Shift+T      Telegram
-Super+Shift+G      Discord
-Super+Q            close window
-Super+F            fullscreen
-Super+M            fit snapped window
-Super+Shift+M      fit window
-Super+W            overview / zoom-to-fit all windows
-Super+A            home toggle
-Super+C            center window
-Super+S            search open windows
-Super+L            lock
-Super+Shift+D      toggle theme
-Super+Shift+I      toggle caffeine / auto-lock
-Super+Shift+W      cycle wallpaper
-Super+N            swaync notification center
-Super+Shift+R      start screen recording
-Super+Shift+S      stop screen recording
-Super+Ctrl+Shift+Q quit driftwm
-Print              screenshot to clipboard
+Alt+Shift            switch keyboard layout
+
+Super+Enter          open Alacritty
+Super+D              open app launcher
+Super+B              open Chrome
+Super+E              open Nautilus
+Super+Z              open Zed
+Super+V              open clipboard history
+Super+Shift+T        open Telegram
+Super+Shift+G        open Discord through X11 wrapper
+
+Super+Q              close focused window
+Super+F              toggle fullscreen
+Super+A              home toggle
+Super+W              overview / zoom-to-fit all windows
+Super+C              center focused window
+Super+M              fit snapped window
+Super+Shift+M        fit focused window
+Super+S              search open windows
+
+Super+L              lock
+Super+Alt+L          lock
+Super+N              toggle notification center
+Super+Shift+D        toggle light/dark theme
+Super+Shift+I        toggle caffeine / auto-lock
+Super+Shift+P        open power menu
+Super+Ctrl+Shift+Q   quit driftwm
+
+Super+Shift+W        cycle shader wallpaper
+Super+Ctrl+W         pick photo wallpaper
+
+Super+Shift+R        start screen recording
+Super+Shift+S        stop screen recording
+
+Ctrl+Shift+1         screenshot area to clipboard
+Ctrl+Shift+2         screenshot screen to clipboard
+Ctrl+Shift+3         screenshot focused window to clipboard
+Print                screenshot screen to clipboard
 ```
 
 Media keys:
 
 ```text
-Volume Up/Down     wpctl volume
-Mute               output mute
-Mic Mute           microphone mute
-Play/Pause         playerctl play-pause
-Next/Previous      playerctl next/previous
-Brightness Up/Down brightnessctl
+Volume Up            raise output volume by 5%
+Volume Down          lower output volume by 5%
+Mute                 toggle output mute
+Mic Mute             toggle microphone mute
+Next                 playerctl next
+Previous             playerctl previous
+Play                 playerctl play-pause
+Pause                playerctl play-pause
+Stop                 playerctl stop
+Brightness Up        raise brightness by 5%
+Brightness Down      lower brightness by 5%
 ```
 
-## Widgets
+Touchpad/window gestures:
 
-Widgets live in:
+```text
+Alt+3-finger-swipe       resize snapped window
+Alt+Shift+3-finger-swipe resize floating window
+```
+
+## Legacy Widgets
+
+The original driftwm Python widgets are kept in the repo, but afterglow does not
+autostart them anymore. The bottom `waybar` replaced their normal desktop role.
+
+Legacy widgets live in:
 
 ```text
 config/driftwm/widgets/
 ```
 
-They are launched by:
+They can still be launched manually with:
 
 ```text
 config/driftwm/widgets/launch.sh

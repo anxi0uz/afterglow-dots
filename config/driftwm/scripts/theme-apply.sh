@@ -41,7 +41,7 @@ sed -i "s|colors-[a-z]*\\.toml|colors-${mode}.toml|" "$RICE/alacritty/alacritty.
 # waybar CSS: only `background:` inside window#waybar and tooltip blocks.
 # Leaves button.active background (accent) and tooltip color (fg, mode-constant
 # per current spec) untouched.
-for f in "$HOME/.config/waybar/taskbar.css" "$HOME/.config/waybar/tray.css"; do
+for f in "$HOME/.config/waybar/bottom.css"; do
     awk -v bg="$BG" '
         /^window#waybar \{/ { in_block = 1 }
         /^tooltip \{/       { in_block = 1 }
@@ -55,11 +55,9 @@ if [ "$no_restart" = "--no-restart" ]; then
     exit 0
 fi
 
-# Restart waybar in autostart order (side taskbar first, then bottom bar after 1s).
+# Restart the screen-anchored bottom bar.
 pkill -x waybar 2>/dev/null || true
 sleep 0.3
-waybar -c "$HOME/.config/waybar/taskbar.jsonc" -s "$HOME/.config/waybar/taskbar.css" &
-sleep 1
 waybar -c "$HOME/.config/waybar/bottom.jsonc" -s "$HOME/.config/waybar/bottom.css" &
 
 # swayosd-server snapshots the GTK theme at startup; restart for OSD popups

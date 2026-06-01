@@ -11,9 +11,7 @@ autostart = [
     "command -v swaync >/dev/null && swaync",
     "command -v wl-paste >/dev/null && command -v cliphist >/dev/null && wl-paste --type text --watch cliphist store",
     "command -v wl-paste >/dev/null && command -v cliphist >/dev/null && wl-paste --type image --watch cliphist store",
-    "command -v waybar >/dev/null && waybar -c ~/.config/waybar/taskbar.jsonc -s ~/.config/waybar/taskbar.css",
     "command -v waybar >/dev/null && sleep 1 && waybar -c ~/.config/waybar/bottom.jsonc -s ~/.config/waybar/bottom.css",
-    "python -c 'import rich' >/dev/null 2>&1 && ~/.config/driftwm/widgets/launch.sh",
     "~/.config/driftwm/scripts/battery_notify.sh",
     "~/.config/driftwm/scripts/theme-watch.sh",
     "command -v swayidle >/dev/null && swayidle -w timeout 300 'brightnessctl -s set 10%' resume 'brightnessctl -r' timeout 330 '~/.config/driftwm/scripts/lock.sh' timeout 600 'systemctl suspend' before-sleep '~/.config/driftwm/scripts/lock.sh'",
@@ -46,7 +44,7 @@ default_mode = "minimal"
 
 [background]
 type = "wallpaper"
-path = "/home/anxi0uz/.config/driftwm/wallpapers/generated/photo-fill-c6edc0dee3de2652.png"
+path = "/home/anxi0uz/.config/driftwm/wallpapers/generated/photo-fill-cd9f39254bcb45e8.png"
 
 [output.outline]
 color="#FDF6E3"
@@ -73,6 +71,7 @@ decoration_fit_snapped = true
 "mod+c" = "center-window"
 "mod+shift+d" = "spawn ~/.config/driftwm/scripts/theme-toggle.sh"
 "mod+shift+i" = "spawn ~/.config/driftwm/scripts/idle-toggle.sh"
+"mod+shift+p" = "spawn ~/.config/driftwm/scripts/power-menu.sh"
 "mod+l" = "spawn ~/.config/driftwm/scripts/lock.sh"
 "mod+alt+l" = "spawn ~/.config/driftwm/scripts/lock.sh"
 "mod+n" = "spawn swaync-client -t"
@@ -93,7 +92,10 @@ decoration_fit_snapped = true
 "mod+m" = "fit-window-snapped"
 "mod+shift+m" = "fit-window"
 "mod+ctrl+shift+q" = "quit"
-"Print" = "spawn grim - | wl-copy"
+"ctrl+shift+1" = "spawn ~/.config/driftwm/scripts/screenshot.sh area"
+"ctrl+shift+2" = "spawn ~/.config/driftwm/scripts/screenshot.sh screen"
+"ctrl+shift+3" = "spawn ~/.config/driftwm/scripts/screenshot.sh window"
+"Print" = "spawn ~/.config/driftwm/scripts/screenshot.sh screen"
 
 [gestures.on-window]
 "alt+3-finger-swipe" = "resize-window-snapped"
@@ -151,14 +153,6 @@ position = [274, -259]
 [[window_rules]]
 app_id = "drift-power-menu"
 position = [274, -370]
-decoration = "none"
-
-# Waybar side taskbar stays on the canvas. The bottom bar intentionally has no
-# positioned rule, so driftwm maps it as a normal screen-anchored layer-shell.
-[[window_rules]]
-app_id = "waybar"
-position = [-289, 21]
-widget = true
 decoration = "none"
 
 # Cosmic settings: hide winit window helper and apply fixed window size

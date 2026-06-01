@@ -21,7 +21,8 @@
     "pulseaudio",
     "network",
     "battery",
-    "tray"
+    "tray",
+    "custom/power"
   ],
 
   "wlr/taskbar": {
@@ -51,6 +52,7 @@
   "clock": {
     "format": " {:%a %d %b %H:%M:%S} ",
     "interval": 1,
+    "on-click": "~/.config/driftwm/scripts/calendar-popup.sh",
     "tooltip-format": "{:%Y-%m-%d}"
   },
 
@@ -110,5 +112,11 @@
   "tray": {
     "icon-size": 15,
     "spacing": 4
+  },
+
+  "custom/power": {
+    "format": " pwr ",
+    "on-click": "~/.config/driftwm/scripts/power-menu.sh",
+    "tooltip": false
   }
 }
