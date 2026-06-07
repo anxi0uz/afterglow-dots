@@ -1,17 +1,35 @@
+@define-color bar_bg #050605;
+@define-color bar_fg #b8b8ae;
+@define-color bar_border #252520;
+@define-color bar_edge #050505;
+@define-color taskbar_fg #a4a49a;
+@define-color taskbar_border #20201c;
+@define-color hover_bg #181814;
+@define-color hover_fg #d8d2c3;
+@define-color active_bg #d8d2c3;
+@define-color active_fg #050605;
+@define-color warn_bg #17130e;
+@define-color warn_fg #d2a24c;
+@define-color critical_bg #4a1717;
+@define-color critical_fg #ffd0d0;
+@define-color tooltip_bg #050605;
+@define-color tooltip_fg #d8d2c3;
+@define-color tooltip_border #44443c;
+
 * {
     border: none;
     border-radius: 0;
     box-shadow: none;
-    font-family: "FantasqueSansM Nerd Font Mono", "Noto Sans Mono", monospace;
-    font-size: 10px;
+    font-family: "Gallant12", "FantasqueSansM Nerd Font Mono", "Noto Sans Mono", monospace;
+    font-size: 12px;
     font-weight: 500;
     min-height: 0;
 }
 
 window#waybar {
-    background: rgba(4, 5, 4, 0.90);
-    border-top: 1px solid rgba(220, 220, 210, 0.16);
-    color: #b8b8ae;
+    background: @bar_bg;
+    border-top: 1px solid @bar_border;
+    color: @bar_fg;
 }
 
 .modules-left,
@@ -31,49 +49,49 @@ window#waybar {
 #battery,
 #tray {
     background: transparent;
-    border-left: 1px solid #252520;
-    color: #b8b8ae;
+    border-left: 1px solid @bar_border;
+    color: @bar_fg;
     margin: 0;
     padding: 0 9px;
 }
 
 #taskbar {
     background: transparent;
-    border-left: 1px solid #050505;
-    border-right: 1px solid #252520;
+    border-left: 1px solid @bar_edge;
+    border-right: 1px solid @bar_border;
     margin: 0;
     padding: 0 2px;
 }
 
 #taskbar button {
     background: transparent;
-    border-left: 1px solid #20201c;
-    color: #a4a49a;
+    border-left: 1px solid @taskbar_border;
+    color: @taskbar_fg;
     margin: 0;
     padding: 0 6px;
 }
 
 #taskbar button:hover {
-    background: #181814;
-    color: #d8d2c3;
+    background: @hover_bg;
+    color: @hover_fg;
 }
 
 #taskbar button.active {
-    background: #d8d2c3;
-    border-left: 1px solid #d8d2c3;
-    color: #050605;
+    background: @active_bg;
+    border-left: 1px solid @active_bg;
+    color: @active_fg;
 }
 
 #pulseaudio.muted,
 #network.disconnected,
 #battery.warning {
-    background: #17130e;
-    color: #d2a24c;
+    background: @warn_bg;
+    color: @warn_fg;
 }
 
 #battery.critical {
-    background: #4a1717;
-    color: #ffd0d0;
+    background: @critical_bg;
+    color: @critical_fg;
 }
 
 #tray > .passive {
@@ -85,8 +103,8 @@ window#waybar {
 }
 
 tooltip {
-    background: #050605;
-    border: 1px solid #44443c;
+    background: @tooltip_bg;
+    border: 1px solid @tooltip_border;
     border-radius: 0;
-    color: #d8d2c3;
+    color: @tooltip_fg;
 }

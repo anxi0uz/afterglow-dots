@@ -3,6 +3,7 @@
   "layer": "top",
   "position": "bottom",
   "height": 28,
+  "width": 1320,
   "exclusive": true,
   "passthrough": false,
   "spacing": 0,

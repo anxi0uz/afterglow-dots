@@ -3,7 +3,10 @@ set -eu
 
 repo_dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 config_src="$repo_dir/config"
+fonts_src="$repo_dir/fonts"
 config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
+data_home="${XDG_DATA_HOME:-$HOME/.local/share}"
+fonts_home="$data_home/fonts/afterglow"
 backup_root="${DRIFT_BACKUP_ROOT:-$HOME/.config-backups}"
 backup_root="${AFTERGLOW_BACKUP_ROOT:-$backup_root}"
 backup_dir="$backup_root/afterglow-$(date +%Y%m%d-%H%M%S)"
@@ -108,7 +111,7 @@ done
 check_commands() {
     required="rsync"
     desktop="driftwm alacritty fuzzel waybar swaync-client swayidle swaylock grim slurp wl-copy wl-paste cliphist notify-send brightnessctl wpctl playerctl ffmpeg"
-    optional="wlr-randr gpu-screen-recorder pavucontrol nautilus telegram-desktop discord zed google-chrome wlrctl"
+    optional="wlr-randr gpu-screen-recorder pavucontrol nautilus telegram-desktop discord zed google-chrome wlrctl foot"
     missing_required=0
     missing_desktop=0
 
@@ -162,14 +165,17 @@ install_package_list() {
             fi
             ;;
         yay)
-            if ! have yay; then
-                log "yay not found; skipping AUR packages from $file"
-                return 0
+            if have yay; then
+                aur_helper="yay"
+            elif have paru; then
+                aur_helper="paru"
+            else
+                die "AUR helper not found. Install yay or paru, then rerun package installation."
             fi
             if [ "$dry_run" -eq 1 ]; then
-                log "+ yay -S --needed - < $file"
+                log "+ $aur_helper -S --needed - < $file"
             else
-                yay -S --needed - < "$file"
+                "$aur_helper" -S --needed - < "$file"
             fi
             ;;
         *)
@@ -245,6 +251,29 @@ copy_configs() {
     fi
 }
 
+copy_fonts() {
+    [ -d "$fonts_src" ] || return 0
+
+    run mkdir -p "$fonts_home"
+
+    if [ "$dry_run" -eq 1 ]; then
+        rsync -a --dry-run --itemize-changes \
+            "$fonts_src/" "$fonts_home/"
+        if have fc-cache; then
+            log "+ fc-cache -f $fonts_home"
+        else
+            log "fc-cache not found; font cache would need manual refresh"
+        fi
+    else
+        rsync -a "$fonts_src/" "$fonts_home/"
+        if have fc-cache; then
+            fc-cache -f "$fonts_home"
+        else
+            log "fc-cache not found; font cache may update after next login"
+        fi
+    fi
+}
+
 chmod_installed_scripts() {
     scripts_dir="$config_home/driftwm/scripts"
     widgets_launcher="$config_home/driftwm/widgets/launch.sh"
@@ -268,7 +297,7 @@ rewrite_home_paths() {
 
     escaped_home="$(printf '%s\n' "$HOME" | sed 's/[\/&]/\\&/g')"
 
-    for dir in driftwm waybar fuzzel swaync alacritty gtk-3.0; do
+    for dir in driftwm waybar fuzzel swaync alacritty foot gtk-3.0 gtk-4.0; do
         target="$config_home/$dir"
         [ -d "$target" ] || continue
 
@@ -372,6 +401,7 @@ fi
 
 backup_existing_configs
 copy_configs
+copy_fonts
 chmod_installed_scripts
 rewrite_home_paths
 patch_output_configs
@@ -383,5 +413,8 @@ if [ "$dry_run" -eq 1 ]; then
     log "Dry run complete. No files were changed."
 else
     log "Installed afterglow configs into $config_home."
+    if [ -z "$target_output" ]; then
+        log "Output config stayed pinned to the repo default. Use --detect-output or --output NAME for VMs/laptops."
+    fi
     log "Log out and choose the driftwm session in your login manager."
 fi

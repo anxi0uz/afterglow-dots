@@ -1,7 +1,6 @@
 base-devel
 git
 rsync
-driftwm
 alacritty
 fuzzel
 waybar

@@ -38,13 +38,14 @@ reset_on_new_window = false
 theme = "capitaine-cursors"
 
 [decorations]
-bg_color = "#272E33"
-fg_color = "#D3C6AA"
+bg_color = "#050605"
+fg_color = "#D8D2C3"
+corner_radius = 0
 default_mode = "minimal"
 
 [background]
 type = "wallpaper"
-path = "/home/anxi0uz/.config/driftwm/wallpapers/generated/photo-fill-cd9f39254bcb45e8.png"
+path = "/home/anxi0uz/.config/driftwm/wallpapers/generated/photo-fill-85349c4682bfacde.png"
 
 [output.outline]
 color="#FDF6E3"
@@ -91,6 +92,7 @@ decoration_fit_snapped = true
 "mod+shift+s" = "spawn ~/.config/driftwm/scripts/record-stop.sh"
 "mod+m" = "fit-window-snapped"
 "mod+shift+m" = "fit-window"
+"mod+ctrl+r" = "reload-config"
 "mod+ctrl+shift+q" = "quit"
 "ctrl+shift+1" = "spawn ~/.config/driftwm/scripts/screenshot.sh area"
 "ctrl+shift+2" = "spawn ~/.config/driftwm/scripts/screenshot.sh screen"
@@ -110,51 +112,6 @@ scale = 1.0
 blur_radius = 7
 blur_strength = 1.45
 
-# Dashboard widgets — positioned around origin for home view (1920x1080)
-
-# Shared defaults for all drift-* widgets (sticky-on flags, last-wins scalars)
-[[window_rules]]
-app_id = "drift-*"
-widget = true
-decoration = "none"
-
-[[window_rules]]
-app_id = "drift-clock"
-position = [-93, 205]
-
-[[window_rules]]
-app_id = "drift-stats"
-position = [-93, 0]
-
-[[window_rules]]
-app_id = "drift-canvas"
-position = [-129, -185]
-
-[[window_rules]]
-app_id = "drift-layout"
-position = [42, -185]
-
-[[window_rules]]
-app_id = "drift-calendar"
-position = [186, 0]
-
-[[window_rules]]
-app_id = "drift-weather"
-position = [186, 205]
-
-[[window_rules]]
-app_id = "drift-notif"
-position = [190, -185]
-
-[[window_rules]]
-app_id = "drift-power"
-position = [274, -259]
-
-[[window_rules]]
-app_id = "drift-power-menu"
-position = [274, -370]
-decoration = "none"
-
 # Cosmic settings: hide winit window helper and apply fixed window size
 [[window_rules]]
 title = "winit window"
@@ -164,6 +121,10 @@ widget = true
 app_id = "com.system76.CosmicSettings"
 size=[500, 725]
 
+[[window_rules]]
+app_id = "google-chrome"
+decoration = "client"
+
 # Telegram: no compositor titlebar.
 [[window_rules]]
 app_id = "org.telegram.desktop"
@@ -171,5 +132,5 @@ decoration = "minimal"
 
 [[window_rules]]
 app_id = "Alacritty"
-opacity = 0.8
-blur = true
+opacity = 1.0
+blur = false

@@ -10,7 +10,8 @@ This repo is opinionated and still defaults to my setup:
 - mode: `1920x1080@180`
 - keyboard layouts: `us,ru`
 - layout switch: `Alt+Shift`
-- terminal: `alacritty`
+- terminal: `alacritty` (`foot` config is included as an optional Gallant test)
+- font: bundled `Gallant12` / Sun Gallant
 - launcher/clipboard UI: `fuzzel`
 - notifications: `swaync`
 - bars/tray: `waybar` screen-anchored bottom bar
@@ -19,6 +20,10 @@ This repo is opinionated and still defaults to my setup:
 - screen recording: `gpu-screen-recorder`
 
 ## Screenshots
+
+These screenshots show the current afterglow desktop as configured in this repo:
+driftwm canvas, bottom waybar, Gallant-style text, current wallpaper flow, and
+the replacement for the old driftwm widgets.
 
 | Desktop | Notifications |
 | --- | --- |
@@ -32,6 +37,14 @@ This repo is opinionated and still defaults to my setup:
 | --- | --- |
 | ![Wallpaper picker](screens/wallpapers%20pick%20menu.jpg) | ![Power menu](screens/power%20menu.jpg) |
 
+| Terminals | Griffith Wallpaper |
+| --- | --- |
+| ![A lot of terminals](screens/a%20lot%20of%20terminals.jpg) | ![Griffith wallpaper](screens/griffith.png) |
+
+| NVIDIA / System |
+| --- |
+| ![NVIDIA and system info](screens/nvidia-smi.jpg) |
+
 ## Contents
 
 ```text
@@ -42,7 +55,10 @@ config/driftwm/fuzzel/ driftwm-specific fuzzel config
 config/swaync/      notification daemon config
 config/alacritty/   default alacritty config for niri/other sessions
 config/driftwm/alacritty/ driftwm-specific alacritty config
+config/foot/        optional foot terminal config with Gallant12
 config/gtk-3.0/     GTK settings restored for the normal desktop look
+config/gtk-4.0/     GTK4/libadwaita color-scheme hook
+fonts/              bundled Gallant12 font
 packages/           dependency package lists
 install.sh          copies configs into ~/.config with backup
 ```
@@ -55,11 +71,13 @@ On CachyOS/Arch-based:
 xargs -a packages/pacman.txt sudo pacman -S --needed
 ```
 
-AUR / non-repo packages:
+AUR / non-repo packages (`driftwm` is here, so install an AUR helper first):
 
 ```sh
 xargs -a packages/aur.txt yay -S --needed
 ```
+
+`paru` is fine too. `./install.sh --packages-only` auto-detects `yay` or `paru`.
 
 If `google-chrome` exists in your CachyOS repos, installing it through `pacman` is fine too.
 
@@ -88,7 +106,7 @@ Preview file changes without writing anything:
 Install configs:
 
 ```sh
-./install.sh
+./install.sh --detect-output
 ```
 
 For a VM, laptop, or a monitor that is not `DP-1`, either pass the output
@@ -104,6 +122,9 @@ Or try automatic detection from `wlr-randr`:
 ./install.sh --detect-output
 ```
 
+Plain `./install.sh` keeps the repo defaults pinned to `DP-1`. On VMs this can
+make waybar look missing because the bar is bound to a nonexistent output.
+
 The installer backs up existing configs to:
 
 ```text
@@ -114,6 +135,7 @@ Then it copies:
 
 ```text
 config/* -> ~/.config/
+fonts/*  -> ~/.local/share/fonts/afterglow/
 ```
 
 After that, log out and choose the `driftwm` session in the login manager.
@@ -154,6 +176,7 @@ Super+C              center focused window
 Super+M              fit snapped window
 Super+Shift+M        fit focused window
 Super+S              search open windows
+Super+Ctrl+R         reload driftwm config
 
 Super+L              lock
 Super+Alt+L          lock
@@ -215,7 +238,8 @@ They can still be launched manually with:
 config/driftwm/widgets/launch.sh
 ```
 
-Their positions are controlled in `config/driftwm/config.toml` using `[[window_rules]]`, for example:
+No widget `[[window_rules]]` are enabled by default. If you bring these widgets
+back, add explicit rules for them yourself, for example:
 
 ```toml
 [[window_rules]]
@@ -301,8 +325,12 @@ Log:
 If `gsettings` says `prefer-dark`, it applies dark colors and `dark_sea.glsl`.
 Otherwise it applies light colors and `pink_cloud.glsl`.
 
-It only changes driftwm, waybar, and driftwm's private alacritty config. The default
-`~/.config/alacritty` and `~/.config/fuzzel` are kept for niri/other sessions.
+The toggle updates driftwm decoration colors, the bottom waybar palette, GTK
+settings for Nautilus/GTK apps, and driftwm's private Alacritty palette. The
+default `~/.config/alacritty` and `~/.config/fuzzel` are kept for niri/other
+sessions.
+
+Windows are square by default via `corner_radius = 0`.
 
 To stop automatic theme switching, remove this autostart line from `config/driftwm/config.toml`:
 
